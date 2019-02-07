@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" States RESTful API """
+""" Cities RESTful API """
 
 from flask import jsonify, abort, request
 from api.v1.views import app_views
@@ -83,7 +83,7 @@ def update_city(city_id):
         abort(400, "Not a JSON")
 
     for k, v in data.items():
-        if k not in ['id', 'created_at', 'updated_at']:
+        if k not in ['id', 'state_id' 'created_at', 'updated_at']:
             setattr(city, k, v)
     city.save()
     return (jsonify(city.to_dict()))
