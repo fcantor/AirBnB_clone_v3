@@ -6,10 +6,12 @@ from models import storage
 from api.v1.views import app_views
 from flask import Flask, Blueprint, jsonify, abort
 from os import getenv
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
 app.config.update(JSONIFY_PRETTYPRINT_REGULAR=True)
+cors = CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
 
 
 @app.errorhandler(404)
