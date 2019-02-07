@@ -22,6 +22,7 @@ def all_places(city_id):
             list.append(place.to_dict())
     return jsonify(list)
 
+
 @app_views.route('/places/<place_id>', methods=['GET'],
                  strict_slashes=False)
 def individual_places(place_id):
@@ -46,13 +47,13 @@ def delete_place(place_id):
     return jsonify({})
 
 
-@app_views.route('/cities/<city_id>/places', methods=['POST'], strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', methods=['POST'],
+                 strict_slashes=False)
 def create_place(city_id):
     """ Creates a Place object, or returns a 400 if the HTTP body request
     is not valid JSON, or if the dict doesnt contain the key name """
     city = storage.get("City", city_id)
-    city_list = [city.id for city in storage.all("City").values()]
-    if city is None or city not in city_list:
+    if city is None:
         abort(404)
     data = request.get_json()
     if data is None:
@@ -60,8 +61,8 @@ def create_place(city_id):
     user_id = data.get('user_id')
     if user_id is None:
         abort(400, "Missing user_id")
-    user_list = [user.id for user in storage.all("User").values()]
-    if user_id not in user_list:
+    user = storage.get("User", user_id)
+    if user is None:
         abort(404)
     name = data.get("name")
     if name is None:
