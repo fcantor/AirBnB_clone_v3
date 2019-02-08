@@ -13,7 +13,8 @@ from models.place import Place
 def all_places(city_id):
     """ Uses to_dict to retrieve an object into a valid JSON """
     all_cities = storage.all("City")
-    if all_cities is None:
+    id_list = [c.id for c in all_cities.values()]
+    if all_cities is None or city_id not in id_list:
         abort(404)
     all_places = storage.all("Place")
     list = []
